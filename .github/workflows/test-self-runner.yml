@@ -1,0 +1,11 @@
+name: System Info
+
+on:
+  workflow_dispatch:
+
+jobs:
+  show-system-info:
+    runs-on: self-hosted
+    steps:
+      - name: Display system information
+        run: uname -a
