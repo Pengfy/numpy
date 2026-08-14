@@ -17,7 +17,7 @@ jobs:
       - name: Install build tools
         run: |
           python3.14 -m pip install --upgrade pip --break-system-packages
-          python3.14 -m pip install build twine --break-system-packages
+          python3.14 -m pip install build twine meson meson-python --break-system-packages
 
       - name: Build package
         run: python3.14 -m build
