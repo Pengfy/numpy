@@ -30,7 +30,7 @@
 
          - name: Build package
            run: |
-             python3.14 -m build --no-build-isolation
+             python3.14 -m build --no-isolation
            env:
              MESONPY_VENDORED_MESON: "0"
 
