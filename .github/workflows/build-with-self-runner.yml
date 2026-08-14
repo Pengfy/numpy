@@ -18,6 +18,7 @@ jobs:
         run: |
           python3.14 -m pip install --upgrade pip --break-system-packages
           python3.14 -m pip install build twine meson meson-python --break-system-packages
+          python3.14 -m pip install --upgrade meson-python --break-system-packages
 
       - name: Check installed packages
         run: |
