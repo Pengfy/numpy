@@ -272,7 +272,7 @@ setup-args = ["--cross-file=$PWD/tools/ci/emscripten/emscripten.meson.cross", "-
 
 
 [tool.meson-python]
-meson = 'vendored-meson/meson/meson.py'
+meson = 'meson'
 
 [tool.meson-python.args]
 install = ['--tags=runtime,python-runtime,tests,devel']
