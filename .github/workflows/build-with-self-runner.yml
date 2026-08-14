@@ -9,27 +9,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Create and activate virtual environment
+      - name: Install build tools
         run: |
-          python3.14 -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install build twine
+          python3.14 -m pip install --upgrade pip --break-system-packages
+          pip install build twine --break-system-packages
 
       - name: Build package
-        run: |
-          source venv/bin/activate
-          python3.14 -m build
+        run: python3.14 -m build
 
       - name: Check package
-        run: |
-          source venv/bin/activate
-          twine check dist/*
+        run: twine check dist/*
 
       - name: Upload to PyPI
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: |
-          source venv/bin/activate
-          twine upload dist/*
+        run: twine upload dist/*
