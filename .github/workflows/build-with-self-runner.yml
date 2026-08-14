@@ -1,43 +1,46 @@
-name: Build and Publish With Self-hosted Runner
+   name: Build and Publish With Self-hosted Runner
 
-on:
-  workflow_dispatch:
+   on:
+     workflow_dispatch:
 
-jobs:
-  build:
-    runs-on: self-hosted
-    steps:
-      - uses: actions/checkout@v4
+   jobs:
+     build:
+       runs-on: self-hosted
+       steps:
+         - uses: actions/checkout@v4
 
-      - name: Check Python version
-        run: |
-          python3.14 --version
-          python3.14 -m pip --version
+         - name: Check Python version
+           run: |
+             python3.14 --version
+             python3.14 -m pip --version
 
-      - name: Install build tools
-        run: |
-          python3.14 -m pip install --upgrade pip --break-system-packages
-          python3.14 -m pip install build twine meson meson-python --break-system-packages
-          python3.14 -m pip install --upgrade meson-python --break-system-packages
+         - name: Install build tools
+           run: |
+             python3.14 -m pip install --upgrade pip --break-system-packages
+             python3.14 -m pip install build twine meson meson-python cython --break-system-packages
 
-      - name: Check installed packages
-        run: |
-          python3.14 -m pip list
+         - name: Verify Cython works
+           run: |
+             python3.14 -c "import Cython; print(f'Cython {Cython.__version__}')"
+             python3.14 -c "from Cython.Compiler.Main import setuptools_main; print('Cython compiler OK')"
 
-      - name: Build package
-        run: |
-          python3.14 -m build
-        env:
-          MESONPY_VENDORED_MESON: "0"
+         - name: Check installed packages
+           run: |
+             python3.14 -m pip list
 
-      - name: Check package
-        run: |
-          python3.14 -m twine check dist/*
+         - name: Build package
+           run: |
+             python3.14 -m build --no-build-isolation
+           env:
+             MESONPY_VENDORED_MESON: "0"
 
-      - name: Upload to PyPI
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-          MESONPY_VENDORED_MESON: "0"
-        run: |
-          python3.14 -m twine upload dist/*
+         - name: Check package
+           run: |
+             python3.14 -m twine check dist/*
+
+         - name: Upload to PyPI
+           env:
+             TWINE_USERNAME: __token__
+             TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+           run: |
+             python3.14 -m twine upload dist/*
