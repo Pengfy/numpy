@@ -9,19 +9,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check Python version
+        run: |
+          python3.14 --version
+          python3.14 -m pip --version
+
       - name: Install build tools
         run: |
           python3.14 -m pip install --upgrade pip --break-system-packages
-          pip install build twine --break-system-packages
+          python3.14 -m pip install build twine --break-system-packages
 
       - name: Build package
         run: python3.14 -m build
 
       - name: Check package
-        run: twine check dist/*
+        run: python3.14 -m twine check dist/*
 
       - name: Upload to PyPI
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: twine upload dist/*
+        run: |
+          python3.14 -m twine upload dist/*
