@@ -9,18 +9,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.14.7'
-
       - name: Install build tools
         run: |
-          python3 -m pip install --upgrade pip
+          python3.14 -m pip install --upgrade pip
           pip install build twine
 
       - name: Build package
-        run: python3 -m build
+        run: python3.14 -m build
 
       - name: Check package
         run: twine check dist/*
