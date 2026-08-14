@@ -19,15 +19,24 @@ jobs:
           python3.14 -m pip install --upgrade pip --break-system-packages
           python3.14 -m pip install build twine meson meson-python --break-system-packages
 
+      - name: Check installed packages
+        run: |
+          python3.14 -m pip list
+
       - name: Build package
-        run: python3.14 -m build
+        run: |
+          python3.14 -m build
+        env:
+          MESONPY_VENDORED_MESON: "0"
 
       - name: Check package
-        run: python3.14 -m twine check dist/*
+        run: |
+          python3.14 -m twine check dist/*
 
       - name: Upload to PyPI
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+          MESONPY_VENDORED_MESON: "0"
         run: |
           python3.14 -m twine upload dist/*
